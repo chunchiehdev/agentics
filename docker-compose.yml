@@ -1,0 +1,10 @@
+services:
+  browser-automation:
+    build: .
+    ports:
+      - "8081:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - .:/app
+    restart: unless-stopped 
