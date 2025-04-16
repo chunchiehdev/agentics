@@ -22,6 +22,8 @@ const Chat: React.FC = () => {
   const [currentTypingIndex, setCurrentTypingIndex] = useState(-1);
   const [sensitiveData, setSensitiveData] = useState<SensitiveField[]>([]);
   const [showSensitiveFields, setShowSensitiveFields] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(localStorage.getItem('browser_automation_session_id'));
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -174,7 +176,6 @@ const Chat: React.FC = () => {
     const needScreenshot = shouldIncludeScreenshot(input);
 
     try {
-      // Add a temporary thinking message
       const thinkingMessage: Message = { 
         role: 'assistant', 
         content: "I'm analyzing your request to understand exactly what you want me to do...",
@@ -184,18 +185,28 @@ const Chat: React.FC = () => {
       setCurrentTypingIndex(messages.length + 1);
       setDisplayedText('');
       
-      // Wait for the typing effect to complete
       await new Promise(resolve => setTimeout(resolve, thinkingMessage.content.length * typingSpeed + 500));
       
-      // Remove the thinking message
       setMessages(prev => prev.filter((_, i) => i !== messages.length + 1));
       
-      // Now make the actual API call
+      const storedSessionId = localStorage.getItem('browser_automation_session_id');
+      
       const response = await axios.post('http://localhost:8081/execute-task', {
         task: input,
         include_screenshot: needScreenshot,
         sensitive_data: Object.keys(sensitiveDataObj).length > 0 ? sensitiveDataObj : undefined
+      }, {
+        headers: storedSessionId ? { 'X-Session-ID': storedSessionId } : {}
       });
+
+      if (response.data.session_id) {
+        localStorage.setItem('browser_automation_session_id', response.data.session_id);
+        setSessionId(response.data.session_id);
+      }
+
+      if (response.data.current_url) {
+        setCurrentUrl(response.data.current_url);
+      }
 
       const assistantMessage: Message = {
         role: 'assistant',
@@ -244,14 +255,42 @@ const Chat: React.FC = () => {
     }
   };
 
+  const getCleanScreenshot = async () => {
+    if (!sessionId) {
+      console.error("No active session");
+      return;
+    }
+    
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`http://localhost:8081/api/v1/session/${sessionId}/clean-screenshot`, {
+        headers: { 'X-Session-ID': sessionId }
+      });
+      
+      if (response.data && response.data.screenshot) {
+        const link = document.createElement('a');
+        link.href = `data:image/png;base64,${response.data.screenshot}`;
+        link.download = `screenshot_${new Date().toISOString().replace(/:/g, '-')}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error("Error getting clean screenshot:", error);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Failed to capture clean screenshot. Make sure there is an active browser session.' 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="chat-wrapper" ref={chatWrapperRef}>
       <div className="chat-container">
         {messages.length === 0 ? (
           <div className="welcome-container">
-            <div className="logo-container">
-              <div className="logo">🌐</div>
-            </div>
             <h2 className="welcome-title">Browser Automation Assistant</h2>
             <p className="welcome-text">What would you like the browser to do for you today?</p>
             <div className="welcome-tips">
@@ -421,6 +460,22 @@ const Chat: React.FC = () => {
             </div>
           )}
         </div>
+        {currentUrl && (
+          <div className="browser-status">
+            <div className="browser-url">
+              <span className="url-icon">🔗</span>
+              <span className="url-text">{currentUrl}</span>
+              <button 
+                onClick={getCleanScreenshot}
+                className="screenshot-button"
+                title="Download clean screenshot"
+                disabled={isLoading}
+              >
+                📸
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
