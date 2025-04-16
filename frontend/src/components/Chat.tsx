@@ -174,6 +174,23 @@ const Chat: React.FC = () => {
     const needScreenshot = shouldIncludeScreenshot(input);
 
     try {
+      // Add a temporary thinking message
+      const thinkingMessage: Message = { 
+        role: 'assistant', 
+        content: "I'm analyzing your request to understand exactly what you want me to do...",
+        isTyping: true 
+      };
+      setMessages(prev => [...prev, thinkingMessage]);
+      setCurrentTypingIndex(messages.length + 1);
+      setDisplayedText('');
+      
+      // Wait for the typing effect to complete
+      await new Promise(resolve => setTimeout(resolve, thinkingMessage.content.length * typingSpeed + 500));
+      
+      // Remove the thinking message
+      setMessages(prev => prev.filter((_, i) => i !== messages.length + 1));
+      
+      // Now make the actual API call
       const response = await axios.post('http://localhost:8081/execute-task', {
         task: input,
         include_screenshot: needScreenshot,
@@ -211,15 +228,15 @@ const Chat: React.FC = () => {
     setShowSensitiveFields(prev => !prev);
   };
   
-  
+   
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-  
+   
     e.target.style.height = 'auto';
     e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
   };
   
-  
+   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -240,9 +257,10 @@ const Chat: React.FC = () => {
             <div className="welcome-tips">
               <p>Examples you can try:</p>
               <ul>
-                <li>Go to Google and search for "browser automation"</li>
-                <li>Visit Wikipedia and search for "artificial intelligence"</li>
-                <li>Go to weather.com and tell me the weather for New York</li>
+                <li>Check the weather in Tokyo</li>
+                <li>Find me the top news stories on CNN</li>
+                <li>Search for programming tutorials on YouTube</li>
+                <li>Go to Twitter and look for trending topics</li>
                 <li>Go to example.com and login with my_username and my_password (add these as sensitive data)</li>
               </ul>
             </div>
@@ -279,7 +297,7 @@ const Chat: React.FC = () => {
                 </div>
               </div>
             ))}
-            {isLoading && (
+            {isLoading && !messages.some(m => m.isTyping) && (
               <div className="message-row assistant">
                 <div className="message-avatar">🌐</div>
                 <div className="message-content-wrapper">
@@ -364,7 +382,7 @@ const Chat: React.FC = () => {
               value={input}
               onChange={handleTextareaChange}
               onKeyDown={handleKeyDown}
-              placeholder="Enter your task..."
+              placeholder="Describe what you want the browser to do..."
               disabled={isLoading}
               className="input-field"
               rows={1}

@@ -7,4 +7,5 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
     volumes:
       - .:/app
-    restart: unless-stopped 
+    restart: unless-stopped
+    command: uvicorn api:app --host 0.0.0.0 --port 8000 --reload 
