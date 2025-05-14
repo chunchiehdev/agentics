@@ -1,0 +1,949 @@
+[
+    {
+        "id": 3,
+        "appId": 3,
+        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book\"></i> &nbsp; <span class=\"text-danger\">便捷窗口 </span>",
+        "href": "/system/20",
+        "target": "_top",
+        "menuType": "FOLDER",
+        "nodes": [
+            {
+                "id": 159,
+                "appId": 135,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-dice-d20\"></i> &nbsp; <span class=\"text-danger\">服務櫃台</span>",
+                "href": "/system/incu?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 154,
+                "appId": 154,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-window-restore\"></i> &nbsp; <span class=\"text-danger\">二代電子表單簽核系統</span>",
+                "href": "/system/194?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 153,
+                "appId": 152,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-chess-queen\"></i> &nbsp; <span class=\"text-danger\">研究發展系統</span>",
+                "href": "/system/192?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 194,
+                "appId": 354,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-freebsd\"></i> &nbsp; <span class=\"text-danger\">活動報名系統2.0報名端</span>",
+                "href": "/system/20221006?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 142,
+                "appId": 142,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-dev\"></i> &nbsp; <span class=\"text-danger\">研討會系統</span>",
+                "href": "/system/seminarsys?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 43,
+                "appId": 43,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-print\"></i> &nbsp; <span class=\"text-danger\">學生事務票選</span>",
+                "href": "/system/61?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 45,
+                "appId": 45,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-calendar-alt\"></i> &nbsp; <span class=\"text-danger\">會議記錄閱覽</span>",
+                "href": "/system/meetingminutes?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 46,
+                "appId": 46,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-yarn\"></i> &nbsp; <span class=\"text-danger\">研發資料庫</span>",
+                "href": "/system/64?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_top",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 201,
+                "appId": 310,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book-open\"></i> &nbsp; <span class=\"text-danger\">［iHouse享想空間］座管系統</span>",
+                "href": "/system/20220523-ihouse?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 56,
+                "appId": 56,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-graduate\"></i> &nbsp; <span class=\"text-danger\">畢業資格審查表</span>",
+                "href": "/system/incu-graduate-2?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_top",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 57,
+                "appId": 57,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-users\"></i> &nbsp; <span class=\"text-danger\">教學評量填寫</span>",
+                "href": "/system/78?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 58,
+                "appId": 41,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-calendar-alt\"></i> &nbsp; <span class=\"text-danger\">學期功課表</span>",
+                "href": "/system/59?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_top",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 95,
+                "appId": 95,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-envelope\"></i> &nbsp; <span class=\"text-danger\">NCU Mail</span>",
+                "href": "/system/129?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 60,
+                "appId": 60,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-apple-pay\"></i> &nbsp; <span class=\"text-danger\">學費繳費單</span>",
+                "href": "/system/82?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_top",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 61,
+                "appId": 48,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-check-square\"></i> &nbsp; <span class=\"text-danger\">學雜(學分)費繳款證明</span>",
+                "href": "/system/tuition?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_top",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 62,
+                "appId": 266,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-comment\"></i> &nbsp; <span class=\"text-danger\">校園授權軟體服務網</span>",
+                "href": "/system/110-newca-production?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 64,
+                "appId": 27,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-eye\"></i> &nbsp; <span class=\"text-danger\">學生期中預警通知查詢</span>",
+                "href": "/system/incu-ewarningstudent?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            },
+            {
+                "id": 101,
+                "appId": 20,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-graduate\"></i> &nbsp; <span class=\"text-danger\">畢業資格審查表</span>",
+                "href": "/system/incu-graduate-1?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                "target": "_blank",
+                "menuType": "APPLICATION",
+                "nodes": null
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "appId": 4,
+        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">學生服務</span>",
+        "href": "/system/21",
+        "target": "_top",
+        "menuType": "FOLDER",
+        "nodes": [
+            {
+                "id": 213,
+                "appId": 492,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book-medical\"></i> &nbsp; <span class=\"text-danger\">學籍成績服務</span>",
+                "href": "/system/student_info",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 124,
+                        "appId": 124,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-scroll\"></i> &nbsp; <span class=\"text-danger\">成績查詢</span>",
+                        "href": "/system/162?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 65,
+                        "appId": 56,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-graduate\"></i> &nbsp; <span class=\"text-danger\">畢業資格審查表</span>",
+                        "href": "/system/incu-graduate-2?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 66,
+                        "appId": 66,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-sort-numeric-down\"></i> &nbsp; <span class=\"text-danger\">學生學籍系統</span>",
+                        "href": "/system/incu-registrationflow?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 15,
+                        "appId": 15,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-sun\"></i> &nbsp; <span class=\"text-danger\">學生證掛失</span>",
+                        "href": "/system/32?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "appId": 6,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-check-circle\"></i> &nbsp; <span class=\"text-danger\">教務相關服務</span>",
+                "href": "/system/23",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 17,
+                        "appId": 17,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-asterisk\"></i> &nbsp; <span class=\"text-danger\">課務系統</span>",
+                        "href": "/system/34?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 18,
+                        "appId": 18,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-th-list\"></i> &nbsp; <span class=\"text-danger\">選課系統</span>",
+                        "href": "/system/35?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 20,
+                        "appId": 20,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-graduate\"></i> &nbsp; <span class=\"text-danger\">畢業資格審查表</span>",
+                        "href": "/system/incu-graduate-1?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 41,
+                        "appId": 41,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-calendar-alt\"></i> &nbsp; <span class=\"text-danger\">學期功課表</span>",
+                        "href": "/system/59?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 172,
+                        "appId": 168,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-atlas\"></i> &nbsp; <span class=\"text-danger\">新 ee-class 系統</span>",
+                        "href": "/system/ncueeclass?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 119,
+                        "appId": 119,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-share-square\"></i> &nbsp; <span class=\"text-danger\">離校流程檢核</span>",
+                        "href": "/system/incu-leaveflow?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "appId": 7,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-clock\"></i> &nbsp; <span class=\"text-danger\">學習服務</span>",
+                "href": "/system/24",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 22,
+                        "appId": 22,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-hand-lizard\"></i> &nbsp; <span class=\"text-danger\">非同步教學</span>",
+                        "href": "/system/39?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 23,
+                        "appId": 57,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-users\"></i> &nbsp; <span class=\"text-danger\">教學評量填寫</span>",
+                        "href": "/system/78?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 181,
+                        "appId": 248,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-medium-m\"></i> &nbsp; <span class=\"text-danger\">MyET</span>",
+                        "href": "/system/myet?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "appId": 8,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-duplicate\"></i> &nbsp; <span class=\"text-danger\">生活助學服務</span>",
+                "href": "/system/25",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 24,
+                        "appId": 104,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-network-wired\"></i> &nbsp; <span class=\"text-danger\">學生宿舍網路系統</span>",
+                        "href": "/system/dormnet?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 25,
+                        "appId": 25,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-check-double\"></i> &nbsp; <span class=\"text-danger\">就學補助系統</span>",
+                        "href": "/system/42?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 47,
+                        "appId": 60,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-apple-pay\"></i> &nbsp; <span class=\"text-danger\">學費繳費單</span>",
+                        "href": "/system/82?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 48,
+                        "appId": 48,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-check-square\"></i> &nbsp; <span class=\"text-danger\">學雜(學分)費繳款證明</span>",
+                        "href": "/system/tuition?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 99,
+                        "appId": 99,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-object-align-top\"></i> &nbsp; <span class=\"text-danger\">獎助學金暨工讀管理系統</span>",
+                        "href": "/system/134?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 108,
+                        "appId": 107,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-step-forward\"></i> &nbsp; <span class=\"text-danger\">人事系統</span>",
+                        "href": "/system/human?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 9,
+                "appId": 9,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-praying-hands\"></i> &nbsp; <span class=\"text-danger\">學生輔導服務</span>",
+                "href": "/system/26",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 26,
+                        "appId": 26,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-pen-nib\"></i> &nbsp; <span class=\"text-danger\">導師輔導資源</span>",
+                        "href": "/system/44?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 27,
+                        "appId": 27,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-eye\"></i> &nbsp; <span class=\"text-danger\">學生期中預警通知查詢</span>",
+                        "href": "/system/incu-ewarningstudent?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 114,
+                        "appId": 114,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-check\"></i> &nbsp; <span class=\"text-danger\">個別諮商</span>",
+                        "href": "/system/consult?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 86,
+                "appId": 86,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-window-restore\"></i> &nbsp; <span class=\"text-danger\">圖書館服務</span>",
+                "href": "/system/116",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 87,
+                        "appId": 236,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-hands-helping\"></i> &nbsp; <span class=\"text-danger\">圖書館雲端服務平台</span>",
+                        "href": "/system/library-cloud-services?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 192,
+                        "appId": 314,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-id-card\"></i> &nbsp; <span class=\"text-danger\">Turnitin 論文原創性比對工具</span>",
+                        "href": "/system/turnitin?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 216,
+                        "appId": 606,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book-reader\"></i> &nbsp; <span class=\"text-danger\">博碩士論文網站</span>",
+                        "href": "/system/etdsimple?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 211,
+                "appId": 487,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">工學院服務專區</span>",
+                "href": "/system/EC Service",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 212,
+                        "appId": 389,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-bowling-ball\"></i> &nbsp; <span class=\"text-danger\">工學院線上申請平台</span>",
+                        "href": "/system/coeoa?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 96,
+                "appId": 96,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">宿舍服務專區</span>",
+                "href": "/system/130",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 117,
+                        "appId": 117,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-hammer\"></i> &nbsp; <span class=\"text-danger\">修繕服務</span>",
+                        "href": "/system/155?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 97,
+                        "appId": 97,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-ribbon\"></i> &nbsp; <span class=\"text-danger\">宿舍抽籤系統</span>",
+                        "href": "/system/132?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 104,
+                        "appId": 104,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-network-wired\"></i> &nbsp; <span class=\"text-danger\">學生宿舍網路系統</span>",
+                        "href": "/system/dormnet?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 204,
+                "appId": 409,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book-open\"></i> &nbsp; <span class=\"text-danger\">iHouse享想空間服務</span>",
+                "href": "/system/",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 205,
+                        "appId": 310,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book-open\"></i> &nbsp; <span class=\"text-danger\">［iHouse享想空間］座管系統</span>",
+                        "href": "/system/20220523-ihouse?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "appId": 2,
+        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">校務行政</span>",
+        "href": "/system/19",
+        "target": "_top",
+        "menuType": "FOLDER",
+        "nodes": [
+            {
+                "id": 10,
+                "appId": 10,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-calendar-plus\"></i> &nbsp; <span class=\"text-danger\">總務服務</span>",
+                "href": "/system/27",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 28,
+                        "appId": 28,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-amazon-pay\"></i> &nbsp; <span class=\"text-danger\">撥帳系統</span>",
+                        "href": "/system/46?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 29,
+                        "appId": 29,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-italic\"></i> &nbsp; <span class=\"text-danger\">財產管理</span>",
+                        "href": "/system/47?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 67,
+                "appId": 67,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">教務服務</span>",
+                "href": "/system/91",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 72,
+                        "appId": 17,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-asterisk\"></i> &nbsp; <span class=\"text-danger\">課務系統</span>",
+                        "href": "/system/34?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 73,
+                        "appId": 18,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-th-list\"></i> &nbsp; <span class=\"text-danger\">選課系統</span>",
+                        "href": "/system/35?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 75,
+                        "appId": 543,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-blogger-b\"></i> &nbsp; <span class=\"text-danger\">畢業資格審查表</span>",
+                        "href": "/system/academic-graduate?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 76,
+                        "appId": 41,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-calendar-alt\"></i> &nbsp; <span class=\"text-danger\">學期功課表</span>",
+                        "href": "/system/59?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 171,
+                        "appId": 168,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-atlas\"></i> &nbsp; <span class=\"text-danger\">新 ee-class 系統</span>",
+                        "href": "/system/ncueeclass?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 11,
+                "appId": 11,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">學務服務</span>",
+                "href": "/system/28",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 81,
+                        "appId": 25,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-check-double\"></i> &nbsp; <span class=\"text-danger\">就學補助系統</span>",
+                        "href": "/system/42?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 82,
+                        "appId": 43,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-print\"></i> &nbsp; <span class=\"text-danger\">學生事務票選</span>",
+                        "href": "/system/61?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 100,
+                        "appId": 99,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-object-align-top\"></i> &nbsp; <span class=\"text-danger\">獎助學金暨工讀管理系統</span>",
+                        "href": "/system/134?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 115,
+                        "appId": 114,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-check\"></i> &nbsp; <span class=\"text-danger\">個別諮商</span>",
+                        "href": "/system/consult?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 149,
+                        "appId": 149,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book\"></i> &nbsp; <span class=\"text-danger\">學務系統</span>",
+                        "href": "/system/189?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 13,
+                "appId": 13,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-project-diagram\"></i> &nbsp; <span class=\"text-danger\">研究發展服務</span>",
+                "href": "/system/30",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 152,
+                        "appId": 152,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-chess-queen\"></i> &nbsp; <span class=\"text-danger\">研究發展系統</span>",
+                        "href": "/system/192?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 209,
+                        "appId": 453,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-graduate\"></i> &nbsp; <span class=\"text-danger\">SciVal</span>",
+                        "href": "/system/scival?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 208,
+                        "appId": 292,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-user-shield\"></i> &nbsp; <span class=\"text-danger\">Pure 學研人才庫</span>",
+                        "href": "/system/pure?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 85,
+                "appId": 85,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-ruble-sign\"></i> &nbsp; <span class=\"text-danger\">圖書館服務</span>",
+                "href": "/system/115",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 35,
+                        "appId": 236,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-hands-helping\"></i> &nbsp; <span class=\"text-danger\">圖書館雲端服務平台</span>",
+                        "href": "/system/library-cloud-services?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 193,
+                        "appId": 314,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-id-card\"></i> &nbsp; <span class=\"text-danger\">Turnitin 論文原創性比對工具</span>",
+                        "href": "/system/turnitin?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 215,
+                        "appId": 606,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-book-reader\"></i> &nbsp; <span class=\"text-danger\">博碩士論文網站</span>",
+                        "href": "/system/etdsimple?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 103,
+                "appId": 103,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">電算中心服務</span>",
+                "href": "/system/computer-center",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 166,
+                        "appId": 148,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-tv\"></i> &nbsp; <span class=\"text-danger\">多雲整合虛擬桌面平台</span>",
+                        "href": "/system/vdi?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 168,
+                        "appId": 358,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-sun\"></i> &nbsp; <span class=\"text-danger\">Office 365 帳號服務系統</span>",
+                        "href": "/system/office365?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 160,
+                        "appId": 176,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-staylinked\"></i> &nbsp; <span class=\"text-danger\">客服系統</span>",
+                        "href": "/system/sdsystem?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 198,
+                        "appId": 266,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-comment\"></i> &nbsp; <span class=\"text-danger\">校園授權軟體服務網</span>",
+                        "href": "/system/110-newca-production?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 169,
+                        "appId": 210,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-network-wired\"></i> &nbsp; <span class=\"text-danger\">VPN 服務系統</span>",
+                        "href": "/system/vpn?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 156,
+                        "appId": 137,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-kickstarter-k\"></i> &nbsp; <span class=\"text-danger\">KMS 認證系統</span>",
+                        "href": "/system/kms?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 157,
+                        "appId": 102,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-google\"></i> &nbsp; <span class=\"text-danger\">GoogleApps (G Suite) 服務</span>",
+                        "href": "/system/gsuite?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 158,
+                        "appId": 169,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon glyphicon glyphicon-random\"></i> &nbsp; <span class=\"text-danger\">SPSS 版權控制系統</span>",
+                        "href": "/system/spss-license-control?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 170,
+                        "appId": 208,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-cloud\"></i> &nbsp; <span class=\"text-danger\">中央大學電子計算機中心雲端服務</span>",
+                        "href": "/system/cloud-service?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 174,
+                "appId": 232,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-folder-open\"></i> &nbsp; <span class=\"text-danger\">環安中心</span>",
+                "href": "/system/ep-center",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 175,
+                        "appId": 233,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-hornbill\"></i> &nbsp; <span class=\"text-danger\">環境保護暨安全衛生中心</span>",
+                        "href": "/system/eps-center?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            },
+            {
+                "id": 14,
+                "appId": 14,
+                "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-hotel\"></i> &nbsp; <span class=\"text-danger\">其他資源服務</span>",
+                "href": "/system/31",
+                "target": "_top",
+                "menuType": "FOLDER",
+                "nodes": [
+                    {
+                        "id": 155,
+                        "appId": 154,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-window-restore\"></i> &nbsp; <span class=\"text-danger\">二代電子表單簽核系統</span>",
+                        "href": "/system/194?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 49,
+                        "appId": 521,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fas fa-calendar-alt\"></i> &nbsp; <span class=\"text-danger\">會議記錄管理</span>",
+                        "href": "/system/meetingmanagement?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 83,
+                        "appId": 60,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-apple-pay\"></i> &nbsp; <span class=\"text-danger\">學費繳費單</span>",
+                        "href": "/system/82?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 84,
+                        "appId": 48,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon far fa-check-square\"></i> &nbsp; <span class=\"text-danger\">學雜(學分)費繳款證明</span>",
+                        "href": "/system/tuition?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_top",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 196,
+                        "appId": 354,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-freebsd\"></i> &nbsp; <span class=\"text-danger\">活動報名系統2.0報名端</span>",
+                        "href": "/system/20221006?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 167,
+                        "appId": 142,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-dev\"></i> &nbsp; <span class=\"text-danger\">研討會系統</span>",
+                        "href": "/system/seminarsys?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    },
+                    {
+                        "id": 180,
+                        "appId": 248,
+                        "text": "&nbsp; &nbsp; <i class=\"text-success icon fab fa-medium-m\"></i> &nbsp; <span class=\"text-danger\">MyET</span>",
+                        "href": "/system/myet?token=XuGDOgaxslWy0P2Tpd3eW0einQL9Heg",
+                        "target": "_blank",
+                        "menuType": "APPLICATION",
+                        "nodes": null
+                    }
+                ]
+            }
+        ]
+    }
+]

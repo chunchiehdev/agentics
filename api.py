@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks, Request
 from pydantic import BaseModel, SecretStr
 from langchain_google_genai import ChatGoogleGenerativeAI
 from browser_use import Agent
@@ -7,16 +7,25 @@ from browser_use.browser.context import BrowserContextConfig
 import os
 from dotenv import load_dotenv
 import asyncio
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from langchain.schema import HumanMessage
 from session_manager import session_manager, get_session_manager
 import base64
+import httpx
+import json
+from datetime import datetime
+from fastapi.responses import StreamingResponse
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 load_dotenv()
+
+RAGFLOW_API = "https://140.115.126.193"
+RAGFLOW_API_KEY = os.getenv('RAGFLOW_API_KEY')
+RAGFLOW_DATASET_ID = os.getenv('RAGFLOW_DATASET_ID')
+RAGFLOW_CHAT_ID = os.getenv('RAGFLOW_CHAT_ID')
 
 app = FastAPI(title="Browser Automation API")
 
@@ -28,18 +37,22 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-# LLM設置
 llm = ChatGoogleGenerativeAI(
     model='gemini-2.0-flash-exp',
     api_key=SecretStr(os.getenv('GEMINI_API_KEY'))
 )
 
+class SensitiveField(BaseModel):
+    key: str
+    value: str
+
 class TaskRequest(BaseModel):
     task: str
     include_screenshot: bool = True
     timeout: Optional[int] = 30
-    sensitive_data: Optional[Dict[str, str]] = None
-    new_session: bool = False  # 是否創建新會話
+    sensitive_data: Optional[List[SensitiveField]] = None 
+    new_session: bool = False
+    ragflow_session_id: Optional[str] = None
 
 class TaskResponse(BaseModel):
     status: str
@@ -47,50 +60,109 @@ class TaskResponse(BaseModel):
     screenshot: Optional[str] = None
     session_id: str
     current_url: Optional[str] = None
+    ragflow_session_id: Optional[str] = None
 
-# 定期清理過期會話
-@app.on_event("startup")
-async def startup_event():
-    async def cleanup_task():
-        while True:
-            await session_manager.clear_inactive_sessions()
-            await asyncio.sleep(300)  # 每5分鐘檢查一次
-    
-    asyncio.create_task(cleanup_task())
+class ChatRequest(BaseModel):
+    question: str
+    session_id: Optional[str] = None
+    stream: str = "true"  
 
-async def process_user_task(task: str, current_url: str = None) -> str:
-    """處理用戶任務生成指令"""
-    try:
+async def process_user_task(task: str, current_url: str = None) -> str:  
+    """Process task using default LLM."""
+    try:  
         context = f"The current browser page is at URL: {current_url}. " if current_url else ""
-        
         prompt = f"""
-        You are a browser automation assistant. {context}Convert the following user request into clear, 
+        You are a browser automation assistant. {context}
+        Convert the following user request into clear,
         step-by-step browser instructions that an automation agent can follow.
-        
+
         For example, if the user says "check the weather in New York", you should generate:
         "1. Go to weather.com
         2. Search for New York
         3. Find and extract the current temperature and conditions"
-        
+
         Be precise and include all necessary details for automation.
-        If the user request involves login, make sure to specify to use placeholder values that 
+        If the user request involves login, make sure to specify to use placeholder values that
         will be replaced by sensitive data.
-        
+
         User Request: {task}
-        
+
         Step-by-step instructions:
         """
-        
         messages = [HumanMessage(content=prompt)]
         response = await llm.ainvoke(messages)
-        
-        logger.info("Processed user task into detailed instructions")
+        logger.info("Processed user task using default LLM")
         return response.content
-    except Exception as e:
-        logger.error(f"Error in task processing: {str(e)}", exc_info=True)
-        return task
 
-@app.post("/execute-task", response_model=TaskResponse)
+    except Exception as e:  
+        logger.error(f"Error in process_user_task: {str(e)}", exc_info=True)  
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing task: {str(e)}"
+        )
+
+async def call_ragflow_api(question: str, session_id: Optional[str] = None, stream: str = "false"):
+    """Shared function to call RAGFlow API"""
+    async with httpx.AsyncClient(follow_redirects=True, verify=False) as client:
+        request_url = f"{RAGFLOW_API}/api/v1/chats/{RAGFLOW_CHAT_ID}/completions"
+        request_headers = {
+            "Authorization": f"Bearer {RAGFLOW_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        request_body = {
+            "question": question,
+            "stream": stream
+        }
+        
+        if session_id:
+            request_body["session_id"] = session_id
+
+        logger.info(f"[RAGFlow] Sending request to: {request_url}")
+        logger.info(f"[RAGFlow] Request body: {request_body}")
+
+        response = await client.post(
+            request_url,
+            headers=request_headers,
+            json=request_body
+        )
+        logger.info(f"[RAGFlow] Response Status: {response.status_code}")
+        logger.info(f"[RAGFlow] Raw Response: {response.text}")
+        response.raise_for_status()
+
+        try:
+            lines = response.text.strip().split('\n')
+            logger.info(f"[RAGFlow] Response lines: {lines}")
+            last_valid_data = None
+            for line in lines:
+                if line.startswith('data:'):
+                    try:
+                        json_str = line[5:].strip()
+                        logger.info(f"[RAGFlow] Processing line: {json_str}")
+                        data = json.loads(json_str)
+                        if data.get('data') and data.get('data') is not True:
+                            last_valid_data = data
+                            logger.info(f"[RAGFlow] Found valid data: {data}")
+                    except json.JSONDecodeError as e:
+                        logger.error(f"[RAGFlow] JSON decode error: {str(e)}")
+                        continue
+            
+            if not last_valid_data:
+                logger.error("[RAGFlow] No valid data found in response")
+                raise HTTPException(
+                    status_code=500,
+                    detail="No valid data found in response"
+                )
+            
+            return last_valid_data
+
+        except json.JSONDecodeError as e:
+            logger.error(f"[RAGFlow] Failed to parse response: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Invalid response from RAGFlow API: {str(e)}"
+            )
+
+@app.post("/api/execute-task", response_model=TaskResponse)
 async def execute_task(
     request: TaskRequest, 
     background_tasks: BackgroundTasks,
@@ -98,17 +170,57 @@ async def execute_task(
     session_id: str = Depends(session_manager.get_session)
 ):
     try:
-
         if request.new_session:
             session_id = await session_manager.create_session()
         
-        logger.info(f"Session ID: {session_id}")
+        logger.info(f"Redis Session ID: {session_id}")
+        logger.info(f"RAGFlow Session ID: {request.ragflow_session_id}")
         logger.info(f"Received task: {request.task}")
+        
+        if not request.ragflow_session_id:
+            ragflow_response_01 = await call_ragflow_api(
+                question=request.task,
+                session_id=None,
+                stream="false"
+            )
+            
+            if not ragflow_response_01.get('data', {}).get('session_id'):
+                raise HTTPException(
+                    status_code=500,
+                    detail="Failed to get RAGFlow session ID"
+                )
+            
+            request.ragflow_session_id = ragflow_response_01['data']['session_id']
+            logger.info(f"Got new RAGFlow session ID: {request.ragflow_session_id}")
+            
+            ragflow_response = await call_ragflow_api(
+                question=request.task,
+                session_id=request.ragflow_session_id,
+                stream="false"
+            )
+        else:
+            ragflow_response = await call_ragflow_api(
+                question=request.task,
+                session_id=request.ragflow_session_id,
+                stream="false"
+            )
+        
+        if not ragflow_response.get('data', {}).get('answer'):
+            raise HTTPException(
+                status_code=500,
+                detail="No valid response from RAGFlow"
+            )
+        
+        ragflow_answer = ragflow_response['data']['answer']
+        logger.info(f"RAGFlow response: {ragflow_answer}")
         
         session_data = await session_manager.get_session_data(session_id)
         current_url = session_data.get("current_url")
         
-        detailed_task = await process_user_task(request.task, current_url)
+        detailed_task = await process_user_task(
+            f"Original task: {request.task}\nRAGFlow understanding: {ragflow_answer}",
+            current_url
+        )
         logger.info(f"Processed task: {detailed_task}")
         
         browser_config = BrowserConfig(
@@ -121,7 +233,7 @@ async def execute_task(
                 browser_window_size={'width': 1920, 'height': 1080},
                 locale='en-US',
                 user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                highlight_elements=True,
+                highlight_elements=False,
                 viewport_expansion=800,
                 wait_between_actions=1.0,
             ),
@@ -138,24 +250,24 @@ async def execute_task(
         )
         
         browser = await session_manager.get_browser(session_id, browser_config)
+        sensitive_data_dict = {}
+        if request.sensitive_data:
+            sensitive_data_dict = {field.key: field.value for field in request.sensitive_data}
         
-    
         agent = Agent(
             task=detailed_task,
             llm=llm,
             browser=browser,
-            sensitive_data=request.sensitive_data
+            sensitive_data=sensitive_data_dict
         )
         
         logger.info("Starting task execution")
         history = await agent.run()
         logger.info("Task execution completed successfully")
         
-    
         if hasattr(browser, 'context') and browser.context and browser.context.pages:
             logger.info(f"Keeping {len(browser.context.pages)} browser pages active after task")
         
-    
         screenshot = None
         result_message = "Task execution completed"
         new_url = None
@@ -167,8 +279,14 @@ async def execute_task(
                 new_url = last_history.state.url
                 await session_manager.update_session(session_id, {"current_url": new_url})
             
-            if request.include_screenshot and hasattr(last_history, 'state') and last_history.state.screenshot:
-                screenshot = last_history.state.screenshot
+            if request.include_screenshot:
+                try:
+                    clean_screenshot = await get_clean_screenshot(session_id, True, session_manager)
+                    screenshot = clean_screenshot["screenshot"]
+                except Exception as e:
+                    logger.error(f"Failed to get clean screenshot: {str(e)}")
+                    if hasattr(last_history, 'state') and last_history.state.screenshot:
+                        screenshot = last_history.state.screenshot
             
             if hasattr(last_history, 'result') and last_history.result and len(last_history.result) > 0:
                 last_result = history.history[-1].result[-1]
@@ -187,6 +305,7 @@ async def execute_task(
             session_id,
             {
                 "task": request.task,
+                "ragflow_response": ragflow_answer,
                 "detailed_task": detailed_task,
                 "result": result_message,
                 "url": new_url
@@ -198,7 +317,8 @@ async def execute_task(
             message=result_message,
             screenshot=screenshot,
             session_id=session_id,
-            current_url=new_url
+            current_url=new_url,
+            ragflow_session_id=request.ragflow_session_id
         )
     except Exception as e:
         logger.error(f"Error executing task: {str(e)}", exc_info=True)
@@ -207,67 +327,13 @@ async def execute_task(
             detail=f"Error executing task: {str(e)}"
         )
 
-@app.get("/session/info")
-async def get_session_info(
-    session_manager = Depends(get_session_manager),
-    session_id: str = Depends(session_manager.get_session)
-):
-    """get session info"""
-    try:
-        session_data = await session_manager.get_session_data(session_id)
-        history = await session_manager.get_history(session_id)
-        
-        return {
-            "session_id": session_id,
-            "created_at": session_data.get("created_at"),
-            "current_url": session_data.get("current_url"),
-            "history_count": len(history)
-        }
-    except Exception as e:
-        logger.error(f"Error getting session info: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/session/history")
-async def get_session_history(
-    limit: int = 10,
-    session_manager = Depends(get_session_manager),
-    session_id: str = Depends(session_manager.get_session)
-):
-    """get session history"""
-    try:
-        history = await session_manager.get_history(session_id, limit)
-        return {
-            "session_id": session_id,
-            "history": history
-        }
-    except Exception as e:
-        logger.error(f"Error getting session history: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/session/new")
-async def create_new_session(
-    session_manager = Depends(get_session_manager)
-):
-    """create new session"""
-    try:
-        session_id = await session_manager.create_session()
-        return {
-            "session_id": session_id,
-            "message": "New session created successfully"
-        }
-    except Exception as e:
-        logger.error(f"Error creating new session: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/v1/session/{session_id}/clean-screenshot")
 async def get_clean_screenshot(
     session_id: str,
     full_page: bool = True,
     session_manager = Depends(get_session_manager)
 ):
-    """get clean screenshot"""
+    """Get a clean screenshot without highlights"""
     try:
-        
         session_data = await session_manager.get_session_data(session_id)
         browser_id = session_data.get("browser_id")
         
@@ -277,70 +343,50 @@ async def get_clean_screenshot(
         browser = session_manager.browsers[browser_id]
         
         if not hasattr(browser, 'playwright_browser') or not browser.playwright_browser:
-            logger.info("Browser is not initialized, initializing now")
             await browser.get_playwright_browser()
         
-        if not hasattr(browser, 'context') or not browser.context:
-            logger.info("No existing browser context, creating new one")
-            browser.context = await browser.new_context()
+        page = browser.playwright_browser.contexts[0].pages[0] if browser.playwright_browser.contexts else None
+        if not page:
+            raise HTTPException(status_code=404, detail="No active page found")
         
-        try:
-            existing_pages = browser.playwright_browser.contexts[0].pages if browser.playwright_browser.contexts else []
-            
-            if not existing_pages:
-                logger.info("No existing pages found, creating a new page")
-                page = await browser.playwright_browser.contexts[0].new_page()
+        await browser.context.remove_highlights()
+
+
+        screenshot_bytes = await page.screenshot(full_page=full_page)
+        screenshot_base64 = base64.b64encode(screenshot_bytes).decode('utf-8')
+        
+        return {"screenshot": screenshot_base64}
                 
-                current_url = session_data.get("current_url")
-                if current_url:
-                    try:
-                        logger.info(f"Navigating to {current_url}")
-                        await page.goto(current_url, wait_until="networkidle", timeout=20000)
-                        await page.wait_for_load_state("domcontentloaded")
-                        logger.info(f"Page loaded for screenshot")
-                    except Exception as e:
-                        logger.error(f"Failed to navigate to {current_url}: {str(e)}")
-                        await page.goto("about:blank")
-                else:
-                    await page.goto("about:blank")
-            else:
-                logger.info(f"Using existing page for screenshot")
-                page = existing_pages[0]
-                
-                try:
-                    await page.reload(wait_until="networkidle", timeout=20000)
-                    await page.wait_for_load_state("domcontentloaded")
-                except Exception as e:
-                    logger.warning(f"Failed to reload page: {str(e)}")
-                
-                logger.info(f"Using existing page at URL: {page.url}")
-            
-            await page.bring_to_front()
-            
-            if full_page:
-                try:
-                    await page.evaluate("""
-                        window.scrollTo(0, document.body.scrollHeight);
-                        setTimeout(() => { window.scrollTo(0, 0); }, 100);
-                    """)
-                    await asyncio.sleep(0.5)
-                except Exception as scroll_err:
-                    logger.debug(f"Error during page scroll: {scroll_err}")
-            
-            await asyncio.sleep(0.5)
-            
-            screenshot_bytes = await page.screenshot(full_page=full_page)
-            
-            screenshot_base64 = base64.b64encode(screenshot_bytes).decode('utf-8')
-            
-            
-            return {"screenshot": screenshot_base64}
-                
-        except Exception as e:
-            logger.error(f"Failed to use browser page: {str(e)}")
-            raise HTTPException(status_code=500, detail=f"Failed to use browser page: {str(e)}")
     except Exception as e:
         logger.error(f"Error capturing clean screenshot: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/session/{session_id}/clean-screenshot")
+async def get_clean_screenshot_endpoint(
+    session_id: str,
+    full_page: bool = True,
+    session_manager = Depends(get_session_manager)
+):
+    """Endpoint to get a clean screenshot of the current page"""
+    return await get_clean_screenshot(session_id, full_page, session_manager)
+
+@app.post("/api/v1/ragflow/completions")
+async def ragflow_completions(request: ChatRequest):
+    try:
+        logger.info(f"[RAGFlow] Request details:")
+        logger.info(f"[RAGFlow] - Session ID: {request.session_id}")
+        logger.info(f"[RAGFlow] - Question: {request.question}")
+        logger.info(f"[RAGFlow] - Stream: {request.stream}")
+
+        response = await call_ragflow_api(
+            question=request.question,
+            session_id=request.session_id,
+            stream=request.stream
+        )
+        return response
+
+    except Exception as e:
+        logger.error(f"[RAGFlow] Error in completions: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/health")

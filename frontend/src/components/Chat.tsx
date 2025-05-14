@@ -13,17 +13,28 @@ interface SensitiveField {
   value: string;
 }
 
+interface RAGFlowSession {
+  id: string;
+  messages: {
+    content: string;
+    role: 'user' | 'assistant';
+  }[];
+}
+
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [screenshots, setScreenshots] = useState<string[]>([]);
   const [includeScreenshot, setIncludeScreenshot] = useState(true);
   const [displayedText, setDisplayedText] = useState('');
   const [currentTypingIndex, setCurrentTypingIndex] = useState(-1);
   const [sensitiveData, setSensitiveData] = useState<SensitiveField[]>([]);
   const [showSensitiveFields, setShowSensitiveFields] = useState(false);
-  const [sessionId, setSessionId] = useState<string | null>(localStorage.getItem('browser_automation_session_id'));
+  const [sessionId, setSessionId] = useState<string | null>(localStorage.getItem('browser_session_id'));
+  const [ragflowSessionId, setRagflowSessionId] = useState<string | null>(localStorage.getItem('ragflow_session_id'));
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+  const [ragFlowSession, setRagFlowSession] = useState<RAGFlowSession | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -122,25 +133,6 @@ const Chat: React.FC = () => {
     inputRef.current?.focus();
   }, []);
 
-  const shouldIncludeScreenshot = (text: string): boolean => {
-    if (text.toLowerCase().includes('no screenshot') || 
-        text.toLowerCase().includes('without screenshot') ||
-        text.toLowerCase().includes('no image') ||
-        text.toLowerCase().includes('不需要截圖') ||
-        text.toLowerCase().includes('無需截圖')) {
-      return false;
-    }
-    
-    if (text.toLowerCase().includes('screenshot') || 
-        text.toLowerCase().includes('capture') ||
-        text.toLowerCase().includes('截圖') ||
-        text.toLowerCase().includes('畫面')) {
-      return true;
-    }
-    
-    return includeScreenshot;
-  };
-
   const handleAddSensitiveField = () => {
     setSensitiveData([...sensitiveData, { key: '', value: '' }]);
   };
@@ -159,75 +151,67 @@ const Chat: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
-    const sensitiveDataObj: Record<string, string> = {};
-    sensitiveData.forEach(field => {
-      if (field.key && field.value) {
-        sensitiveDataObj[field.key] = field.value;
-      }
-    });
-
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
+    const userMessage = input;
     setInput('');
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-    const needScreenshot = shouldIncludeScreenshot(input);
-
     try {
-      const thinkingMessage: Message = { 
-        role: 'assistant', 
-        content: "I'm analyzing your request to understand exactly what you want me to do...",
-        isTyping: true 
-      };
-      setMessages(prev => [...prev, thinkingMessage]);
-      setCurrentTypingIndex(messages.length + 1);
-      setDisplayedText('');
-      
-      await new Promise(resolve => setTimeout(resolve, thinkingMessage.content.length * typingSpeed + 500));
-      
-      setMessages(prev => prev.filter((_, i) => i !== messages.length + 1));
-      
-      const storedSessionId = localStorage.getItem('browser_automation_session_id');
-      
-      const response = await axios.post('http://localhost:8081/execute-task', {
-        task: input,
-        include_screenshot: needScreenshot,
-        sensitive_data: Object.keys(sensitiveDataObj).length > 0 ? sensitiveDataObj : undefined
-      }, {
-        headers: storedSessionId ? { 'X-Session-ID': storedSessionId } : {}
-      });
+      const response = await axios.post(
+        'http://localhost:8081/api/execute-task',
+        {
+          task: userMessage,
+          include_screenshot: includeScreenshot,
+          sensitive_data: sensitiveData,
+          session_id: sessionId,
+          ragflow_session_id: ragflowSessionId
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
-      if (response.data.session_id) {
-        localStorage.setItem('browser_automation_session_id', response.data.session_id);
-        setSessionId(response.data.session_id);
+      if (response.data) {
+        // Store browser session ID if this is the first message
+        if (!sessionId && response.data.session_id) {
+          const newSessionId = response.data.session_id;
+          setSessionId(newSessionId);
+          localStorage.setItem('browser_session_id', newSessionId);
+        }
+
+        // Store RAGFlow session ID if this is the first message
+        if (!ragflowSessionId && response.data.ragflow_session_id) {
+          const newRagflowSessionId = response.data.ragflow_session_id;
+          setRagflowSessionId(newRagflowSessionId);
+          localStorage.setItem('ragflow_session_id', newRagflowSessionId);
+        }
+
+        // Add assistant's response
+        if (response.data.message) {
+          setMessages(prev => [...prev, { 
+            role: 'assistant',
+            content: response.data.message,
+            screenshot: response.data.screenshot
+          }]);
+        }
+
+        // Update current URL if available
+        if (response.data.current_url) {
+          setCurrentUrl(response.data.current_url);
+        }
       }
-
-      if (response.data.current_url) {
-        setCurrentUrl(response.data.current_url);
-      }
-
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: response.data.message || 'Task executed successfully',
-        screenshot: response.data.screenshot,
-        isTyping: true
-      };
-      
-      setMessages(prev => [...prev, assistantMessage]);
-      setCurrentTypingIndex(messages.length + 1); 
-      setDisplayedText('');
-      
     } catch (error) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: 'Error executing task. Please try again.'
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      console.error('Error:', error);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Sorry, there was an error processing your request. Please try again.' 
+      }]);
     } finally {
       setIsLoading(false);
-      inputRef.current?.focus();
     }
   };
 
@@ -242,7 +226,6 @@ const Chat: React.FC = () => {
    
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-   
     e.target.style.height = 'auto';
     e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
   };
