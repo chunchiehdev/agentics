@@ -1,5 +1,5 @@
 # Browser Automation API
-
+![architechure](./public/architechure.png)
 A FastAPI-based service that combines browser automation with LLM-powered task execution and RAGFlow integration.
 
 ## Features
