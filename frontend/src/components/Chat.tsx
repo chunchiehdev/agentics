@@ -25,7 +25,6 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [screenshots, setScreenshots] = useState<string[]>([]);
   const [includeScreenshot, setIncludeScreenshot] = useState(true);
   const [displayedText, setDisplayedText] = useState('');
   const [currentTypingIndex, setCurrentTypingIndex] = useState(-1);
@@ -34,13 +33,11 @@ const Chat: React.FC = () => {
   const [sessionId, setSessionId] = useState<string | null>(localStorage.getItem('browser_session_id'));
   const [ragflowSessionId, setRagflowSessionId] = useState<string | null>(localStorage.getItem('ragflow_session_id'));
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
-  const [ragFlowSession, setRagFlowSession] = useState<RAGFlowSession | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatWrapperRef = useRef<HTMLDivElement>(null);
   const typingSpeed = 10;
-
   
   useEffect(() => {
     const chatWrapper = chatWrapperRef.current;

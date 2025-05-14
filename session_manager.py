@@ -21,7 +21,6 @@ class SessionManager:
         self.browsers = {} 
     
     async def get_session(self, session_id: Optional[str] = Header(None, alias="X-Session-ID")):
-        """獲取會話，作為FastAPI依賴"""
         if session_id:
             if self.redis.exists(f"session:{session_id}"):
                 self.redis.hset(f"session:{session_id}", "last_active", datetime.now().isoformat())
@@ -30,7 +29,6 @@ class SessionManager:
         return await self.create_session()
     
     async def create_session(self) -> str:
-        """創建新的會話"""
         session_id = str(uuid.uuid4())
         
         self.redis.hset(
@@ -48,7 +46,6 @@ class SessionManager:
         return session_id
     
     async def get_browser(self, session_id: str, config=None) -> Browser:
-        """獲取會話關聯的瀏覽器實例"""
         browser_id = self.redis.hget(f"session:{session_id}", "browser_id")
         
         if not browser_id or browser_id not in self.browsers:
@@ -62,13 +59,11 @@ class SessionManager:
         return self.browsers[browser_id]
     
     async def update_session(self, session_id: str, data: Dict[str, Any]):
-        """更新會話數據"""
         self.redis.expire(f"session:{session_id}", SESSION_TIMEOUT)
         
         self.redis.hset(f"session:{session_id}", mapping=data)
     
     async def add_history(self, session_id: str, history_item: Dict[str, Any]):
-        """添加歷史記錄"""
         history_key = f"history:{session_id}"
         
         history_item["timestamp"] = datetime.now().isoformat()
@@ -77,7 +72,6 @@ class SessionManager:
         self.redis.expire(history_key, SESSION_TIMEOUT)
     
     async def get_session_data(self, session_id: str) -> Dict[str, Any]:
-        """獲取會話數據"""
         data = self.redis.hgetall(f"session:{session_id}")
         
         if not data:
@@ -86,7 +80,6 @@ class SessionManager:
         return data
     
     async def get_history(self, session_id: str, limit: int = -1) -> list:
-        """獲取會話歷史記錄"""
         history_key = f"history:{session_id}"
         
         if limit > 0:
@@ -97,7 +90,6 @@ class SessionManager:
         return [json.loads(item) for item in raw_items]
     
     async def clear_inactive_sessions(self):
-        """清理不活躍的會話和釋放資源"""
         for key in self.redis.keys("session:*"):
             session_id = key.split(":", 1)[1]
             last_active = self.redis.hget(key, "last_active")

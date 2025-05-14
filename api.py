@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 load_dotenv()
 
-RAGFLOW_API = "https://140.115.126.193"
+RAGFLOW_API = os.getenv(RAGFLOW_API)
 RAGFLOW_API_KEY = os.getenv('RAGFLOW_API_KEY')
 RAGFLOW_DATASET_ID = os.getenv('RAGFLOW_DATASET_ID')
 RAGFLOW_CHAT_ID = os.getenv('RAGFLOW_CHAT_ID')
