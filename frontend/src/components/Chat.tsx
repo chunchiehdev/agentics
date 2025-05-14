@@ -13,6 +13,14 @@ interface SensitiveField {
   value: string;
 }
 
+interface RAGFlowSession {
+  id: string;
+  messages: {
+    content: string;
+    role: 'user' | 'assistant';
+  }[];
+}
+
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -22,12 +30,14 @@ const Chat: React.FC = () => {
   const [currentTypingIndex, setCurrentTypingIndex] = useState(-1);
   const [sensitiveData, setSensitiveData] = useState<SensitiveField[]>([]);
   const [showSensitiveFields, setShowSensitiveFields] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(localStorage.getItem('browser_session_id'));
+  const [ragflowSessionId, setRagflowSessionId] = useState<string | null>(localStorage.getItem('ragflow_session_id'));
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatWrapperRef = useRef<HTMLDivElement>(null);
   const typingSpeed = 10;
-
   
   useEffect(() => {
     const chatWrapper = chatWrapperRef.current;
@@ -120,25 +130,6 @@ const Chat: React.FC = () => {
     inputRef.current?.focus();
   }, []);
 
-  const shouldIncludeScreenshot = (text: string): boolean => {
-    if (text.toLowerCase().includes('no screenshot') || 
-        text.toLowerCase().includes('without screenshot') ||
-        text.toLowerCase().includes('no image') ||
-        text.toLowerCase().includes('不需要截圖') ||
-        text.toLowerCase().includes('無需截圖')) {
-      return false;
-    }
-    
-    if (text.toLowerCase().includes('screenshot') || 
-        text.toLowerCase().includes('capture') ||
-        text.toLowerCase().includes('截圖') ||
-        text.toLowerCase().includes('畫面')) {
-      return true;
-    }
-    
-    return includeScreenshot;
-  };
-
   const handleAddSensitiveField = () => {
     setSensitiveData([...sensitiveData, { key: '', value: '' }]);
   };
@@ -157,49 +148,67 @@ const Chat: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
-    const sensitiveDataObj: Record<string, string> = {};
-    sensitiveData.forEach(field => {
-      if (field.key && field.value) {
-        sensitiveDataObj[field.key] = field.value;
-      }
-    });
-
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
+    const userMessage = input;
     setInput('');
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-    const needScreenshot = shouldIncludeScreenshot(input);
-
     try {
-      const response = await axios.post('http://localhost:8081/execute-task', {
-        task: input,
-        include_screenshot: needScreenshot,
-        sensitive_data: Object.keys(sensitiveDataObj).length > 0 ? sensitiveDataObj : undefined
-      });
+      const response = await axios.post(
+        'http://localhost:8081/api/execute-task',
+        {
+          task: userMessage,
+          include_screenshot: includeScreenshot,
+          sensitive_data: sensitiveData,
+          session_id: sessionId,
+          ragflow_session_id: ragflowSessionId
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: response.data.message || 'Task executed successfully',
-        screenshot: response.data.screenshot,
-        isTyping: true
-      };
-      
-      setMessages(prev => [...prev, assistantMessage]);
-      setCurrentTypingIndex(messages.length + 1); 
-      setDisplayedText('');
-      
+      if (response.data) {
+        // Store browser session ID if this is the first message
+        if (!sessionId && response.data.session_id) {
+          const newSessionId = response.data.session_id;
+          setSessionId(newSessionId);
+          localStorage.setItem('browser_session_id', newSessionId);
+        }
+
+        // Store RAGFlow session ID if this is the first message
+        if (!ragflowSessionId && response.data.ragflow_session_id) {
+          const newRagflowSessionId = response.data.ragflow_session_id;
+          setRagflowSessionId(newRagflowSessionId);
+          localStorage.setItem('ragflow_session_id', newRagflowSessionId);
+        }
+
+        // Add assistant's response
+        if (response.data.message) {
+          setMessages(prev => [...prev, { 
+            role: 'assistant',
+            content: response.data.message,
+            screenshot: response.data.screenshot
+          }]);
+        }
+
+        // Update current URL if available
+        if (response.data.current_url) {
+          setCurrentUrl(response.data.current_url);
+        }
+      }
     } catch (error) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: 'Error executing task. Please try again.'
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      console.error('Error:', error);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Sorry, there was an error processing your request. Please try again.' 
+      }]);
     } finally {
       setIsLoading(false);
-      inputRef.current?.focus();
     }
   };
 
@@ -211,19 +220,49 @@ const Chat: React.FC = () => {
     setShowSensitiveFields(prev => !prev);
   };
   
-  
+   
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-  
     e.target.style.height = 'auto';
     e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
   };
   
-  
+   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
+    }
+  };
+
+  const getCleanScreenshot = async () => {
+    if (!sessionId) {
+      console.error("No active session");
+      return;
+    }
+    
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`http://localhost:8081/api/v1/session/${sessionId}/clean-screenshot`, {
+        headers: { 'X-Session-ID': sessionId }
+      });
+      
+      if (response.data && response.data.screenshot) {
+        const link = document.createElement('a');
+        link.href = `data:image/png;base64,${response.data.screenshot}`;
+        link.download = `screenshot_${new Date().toISOString().replace(/:/g, '-')}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error("Error getting clean screenshot:", error);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Failed to capture clean screenshot. Make sure there is an active browser session.' 
+      }]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -232,17 +271,15 @@ const Chat: React.FC = () => {
       <div className="chat-container">
         {messages.length === 0 ? (
           <div className="welcome-container">
-            <div className="logo-container">
-              <div className="logo">🌐</div>
-            </div>
             <h2 className="welcome-title">Browser Automation Assistant</h2>
             <p className="welcome-text">What would you like the browser to do for you today?</p>
             <div className="welcome-tips">
               <p>Examples you can try:</p>
               <ul>
-                <li>Go to Google and search for "browser automation"</li>
-                <li>Visit Wikipedia and search for "artificial intelligence"</li>
-                <li>Go to weather.com and tell me the weather for New York</li>
+                <li>Check the weather in Tokyo</li>
+                <li>Find me the top news stories on CNN</li>
+                <li>Search for programming tutorials on YouTube</li>
+                <li>Go to Twitter and look for trending topics</li>
                 <li>Go to example.com and login with my_username and my_password (add these as sensitive data)</li>
               </ul>
             </div>
@@ -279,7 +316,7 @@ const Chat: React.FC = () => {
                 </div>
               </div>
             ))}
-            {isLoading && (
+            {isLoading && !messages.some(m => m.isTyping) && (
               <div className="message-row assistant">
                 <div className="message-avatar">🌐</div>
                 <div className="message-content-wrapper">
@@ -364,7 +401,7 @@ const Chat: React.FC = () => {
               value={input}
               onChange={handleTextareaChange}
               onKeyDown={handleKeyDown}
-              placeholder="Enter your task..."
+              placeholder="Describe what you want the browser to do..."
               disabled={isLoading}
               className="input-field"
               rows={1}
@@ -403,6 +440,22 @@ const Chat: React.FC = () => {
             </div>
           )}
         </div>
+        {currentUrl && (
+          <div className="browser-status">
+            <div className="browser-url">
+              <span className="url-icon">🔗</span>
+              <span className="url-text">{currentUrl}</span>
+              <button 
+                onClick={getCleanScreenshot}
+                className="screenshot-button"
+                title="Download clean screenshot"
+                disabled={isLoading}
+              >
+                📸
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
